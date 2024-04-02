@@ -11,20 +11,19 @@ var __metadata = (this && this.__metadata) || function (k, v) {
 var __param = (this && this.__param) || function (paramIndex, decorator) {
     return function (target, key) { decorator(target, key, paramIndex); }
 };
-var _a;
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.MyGateway = void 0;
 const websockets_1 = require("@nestjs/websockets");
-const event_1 = require("src/common/constants/event");
+const event_constants_1 = require("../common/constants/event.constants");
 const socket_io_1 = require("socket.io");
 const common_1 = require("@nestjs/common");
 const jwt_1 = require("@nestjs/jwt");
 const config_1 = require("@nestjs/config");
-const custom_error_1 = require("src/helpers/errors/custom.error");
+const custom_error_1 = require("../helpers/errors/custom.error");
 const mongoose_1 = require("@nestjs/mongoose");
-const user_entity_1 = require("src/models/users/user.entity");
+const user_entity_1 = require("../models/user/user.entity");
 const mongoose_2 = require("mongoose");
-const exception_filters_1 = require("src/common/filters/exception.filters");
+const exception_filters_1 = require("../common/filters/exception.filters");
 const message_entity_1 = require("../models/message/message.entity");
 let MyGateway = class MyGateway {
     constructor(UserModel, MessageModel, configService, jwtService) {
@@ -40,7 +39,7 @@ let MyGateway = class MyGateway {
             let user = socket['user'];
             this.userSocketIds.set(user._id.toString(), socket.id);
             console.log("socketUserIds---->", this.userSocketIds);
-            socket.on(event_1.NEW_MESSAGE, async ({ chatId, members, content }) => {
+            socket.on(event_constants_1.NEW_MESSAGE, async ({ chatId, members, content }) => {
                 const messageForRealtime = {
                     content,
                     sender: {
@@ -57,7 +56,7 @@ let MyGateway = class MyGateway {
                     chat: chatId,
                     receiver: data.members
                 };
-                this.server.to(data['socketIds']).emit(event_1.NEW_MESSAGE, {
+                this.server.to(data['socketIds']).emit(event_constants_1.NEW_MESSAGE, {
                     chatId,
                     message: messageForRealtime
                 });
@@ -110,10 +109,10 @@ let MyGateway = class MyGateway {
 exports.MyGateway = MyGateway;
 __decorate([
     (0, websockets_1.WebSocketServer)(),
-    __metadata("design:type", typeof (_a = typeof socket_io_1.Server !== "undefined" && socket_io_1.Server) === "function" ? _a : Object)
+    __metadata("design:type", socket_io_1.Server)
 ], MyGateway.prototype, "server", void 0);
 __decorate([
-    (0, websockets_1.SubscribeMessage)(event_1.NEW_MESSAGE),
+    (0, websockets_1.SubscribeMessage)(event_constants_1.NEW_MESSAGE),
     __param(0, (0, websockets_1.MessageBody)()),
     __metadata("design:type", Function),
     __metadata("design:paramtypes", [Object]),

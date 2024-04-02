@@ -8,7 +8,7 @@ var __decorate = (this && this.__decorate) || function (decorators, target, key,
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.GatewayModule = void 0;
 const common_1 = require("@nestjs/common");
-const gateway_1 = require("./gateway");
+const gateway_socket_1 = require("./gateway.socket");
 const jwt_1 = require("@nestjs/jwt");
 const config_1 = require("@nestjs/config");
 const mongoose_1 = require("@nestjs/mongoose");
@@ -20,7 +20,7 @@ exports.GatewayModule = GatewayModule;
 exports.GatewayModule = GatewayModule = __decorate([
     (0, common_1.Module)({
         imports: [jwt_1.JwtModule, config_1.ConfigModule.forRoot(), mongoose_1.MongooseModule.forFeature([{ name: 'User', schema: user_entity_1.UserSchema }, { name: 'Message', schema: message_entity_1.MessageSchema }])],
-        providers: [gateway_1.MyGateway]
+        providers: [gateway_socket_1.MyGateway]
     })
 ], GatewayModule);
 //# sourceMappingURL=gateway.module.js.map

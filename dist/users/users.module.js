@@ -8,15 +8,24 @@ var __decorate = (this && this.__decorate) || function (decorators, target, key,
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.UsersModule = void 0;
 const common_1 = require("@nestjs/common");
-const users_service_1 = require("./users.service");
 const users_controller_1 = require("./users.controller");
+const users_service_1 = require("./users.service");
+const mongoose_1 = require("@nestjs/mongoose");
+const jwt_1 = require("@nestjs/jwt");
+const auth_module_1 = require("../auth/auth.module");
+const chat_entity_1 = require("../models/chat/chat.entity");
+const message_entity_1 = require("../models/message/message.entity");
+const config_1 = require("@nestjs/config");
+const user_entity_1 = require("../models/user/user.entity");
+const friendRequest_enitity_1 = require("../models/freindRequest/friendRequest.enitity");
 let UsersModule = class UsersModule {
 };
 exports.UsersModule = UsersModule;
 exports.UsersModule = UsersModule = __decorate([
     (0, common_1.Module)({
+        imports: [mongoose_1.MongooseModule.forFeature([{ name: 'Chat', schema: chat_entity_1.ChatSchema }, { name: 'Message', schema: message_entity_1.MessageSchema }, { name: 'User', schema: user_entity_1.UserSchema }, { name: 'FriendRequest', schema: friendRequest_enitity_1.FriendRequestSchema }]), config_1.ConfigModule.forRoot(), jwt_1.JwtModule, auth_module_1.AuthModule],
         controllers: [users_controller_1.UsersController],
-        providers: [users_service_1.UsersService],
+        providers: [users_service_1.UsersService]
     })
 ], UsersModule);
 //# sourceMappingURL=users.module.js.map

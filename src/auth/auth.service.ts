@@ -40,6 +40,7 @@ export class AuthService {
             const { username, password } = userPayload;
             if (username && password) {
                 const verifyUser = await this.UserModel.findOne({ username }).select("+password")
+                console.log(verifyUser)
                 if (!verifyUser) throw new NotFoundException('User not found')
 
                 //Camparing the passwords

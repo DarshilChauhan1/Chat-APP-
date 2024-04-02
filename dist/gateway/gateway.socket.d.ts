@@ -26,7 +26,7 @@ import { Server } from 'socket.io';
 import { OnModuleInit } from "@nestjs/common";
 import { JwtService } from "@nestjs/jwt";
 import { ConfigService } from "@nestjs/config";
-import { User } from "src/models/users/user.entity";
+import { User } from "src/models/user/user.entity";
 import { Model } from "mongoose";
 import { Message } from "src/models/message/message.entity";
 export declare class MyGateway implements OnModuleInit {

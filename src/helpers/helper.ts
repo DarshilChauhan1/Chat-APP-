@@ -13,4 +13,4 @@ export class ResponseBody {
 
 
 //OtherMembers of the chat 
-export const otherMember = (members : any, userId : string) => members.find((member)=> member._id !== userId)
+export const otherMember = (members : any, userId : string) => members.filter((member)=> member._id,toString() !== userId)
