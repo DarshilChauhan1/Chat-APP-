@@ -40,7 +40,7 @@ export class UsersController {
 
     @Get('mychats')
     getAllOnetoOneChats(@Req() request : Request){
-        return 
+        return this.userService.getAllOnetoOneChat(request);
     }
 
     @Get('messages')
