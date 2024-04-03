@@ -7,15 +7,17 @@ export class ExceptionHandling implements ExceptionFilter{
         const ctx = host.switchToHttp()
         const request = ctx.getRequest<Request>();
         const response = ctx.getResponse<Response>();
-        const exceptionResponse = exception.getResponse()
+        const exceptionResponse = exception instanceof HttpException ? exception.getResponse() : ""
 
         const httpStatus =  exception instanceof HttpException ? exception.getStatus() : HttpStatus.INTERNAL_SERVER_ERROR;
-
+        
+        console.log(httpStatus)
        
         let responseBody = {
             statusCode : httpStatus,
             message : exceptionResponse['message'] ?  exceptionResponse['message'] : 'Something went wrong',
-            path : request.url
+            path : request.url,
+            success : httpStatus == (200 || 201) ? true : false
         }
 
         //For custom error if we provide redirectTo
