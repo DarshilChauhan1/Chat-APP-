@@ -126,7 +126,8 @@ export class UsersService {
         try {
             const {receiverId, chatId} = paylaod;
             let userId = request['user'].id
-            const getAllMessages = await this.MessageModel.find({chat : chatId, updatedAt : -1}).populate('chat', 'name groupChat members')
+            //for fetching the chat of mine as well as others
+            const getAllMessages = await this.MessageModel.find({chat : chatId, $or : [{sender : userId}, {receiver : {$in : userId}}],updatedAt : -1}).populate('chat', 'name groupChat members')
 
             //case when user deletes all the chats
             if(!getAllMessages) throw new NotFoundException('User has no chats');
