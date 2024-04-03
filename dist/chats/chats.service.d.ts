@@ -41,7 +41,7 @@ export declare class ChatsService {
     removeMembersToGroup(chatId: string, payload: {
         members: string[];
     }, request: Request): Promise<void>;
-    leaveGroup(chatId: string, request: Request): Promise<void>;
+    leaveGroup(chatId: string, request: Request): Promise<ResponseBody>;
     renameGroup(payload: {
         name: string;
     }, chatId: string, request: Request): Promise<void>;

@@ -1,5 +1,5 @@
 import { MessageBody, SubscribeMessage, WebSocketGateway, WebSocketServer } from "@nestjs/websockets";
-import { NEW_MESSAGE } from "src/common/constants/event.constants";
+import { NEW_MESSAGE, REFETCH_CHATS } from "src/common/constants/event.constants";
 import { Server, Socket } from 'socket.io'
 import { NotFoundException, OnModuleInit, Req, UseFilters } from "@nestjs/common";
 import { JwtService } from "@nestjs/jwt";
@@ -28,7 +28,22 @@ export class MyGateway implements OnModuleInit {
         this.server.on('connection', async (socket: Socket) => {
             let user = socket['user'];
             this.userSocketIds.set(user._id.toString(), socket.id);
-            console.log("socketUserIds---->",this.userSocketIds);
+
+            socket.on(REFETCH_CHATS, async({chatId, memberId})=>{
+                let socketId = this.userSocketIds.get(memberId);
+                let messages = []
+                try {
+                    messages = await this.MessageModel.find({$or : [{receiver : {$in : [memberId]}}, {sender : memberId}]})
+                } catch (error) {
+                    throw error
+                }
+                
+                const messagesForRealTime = {
+                    messages : messages,
+                    chat : chatId,
+                }
+                socket.to(socketId).emit(REFETCH_CHATS, messagesForRealTime)
+            })
             socket.on(NEW_MESSAGE, async ({ chatId, members, content }) => {
                 const messageForRealtime = {
                     content,

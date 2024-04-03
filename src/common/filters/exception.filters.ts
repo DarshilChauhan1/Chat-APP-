@@ -17,6 +17,8 @@ export class ExceptionHandling implements ExceptionFilter{
             message : exceptionResponse['message'] ?  exceptionResponse['message'] : 'Something went wrong',
             path : request.url
         }
+
+        //For custom error if we provide redirectTo
         if(exceptionResponse['redirectTo'] != "") responseBody['redirectTo'] = exceptionResponse['redirectTo']
         //sending the error response 
         response.status(httpStatus).send(responseBody);

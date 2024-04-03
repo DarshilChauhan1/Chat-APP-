@@ -114,15 +114,25 @@ let ChatsService = class ChatsService {
     async leaveGroup(chatId, request) {
         try {
             let userId = request['user'].id;
-            const getGroupChat = await this.ChatModel.find({ _id: chatId, members: { $in: [userId] } });
+            const getGroupChat = await this.ChatModel.findOne({ _id: chatId, members: { $in: [userId] } });
             if (!getGroupChat)
                 throw new common_1.NotFoundException("Group chat not found or User is not in the group");
-            if (getGroupChat[0].creator == userId) {
-                let members = getGroupChat[0].members;
-                let newCreator = Math.floor(Math.random() * members.length);
+            let updatedMembers = getGroupChat.members.filter((id) => id.toString() !== userId);
+            if (updatedMembers.length < 3)
+                throw new common_1.ConflictException('Group must have atleast 3 members');
+            if (getGroupChat.creator.toString() == userId) {
+                let newCreator = Math.floor(Math.random() * updatedMembers.length);
+                getGroupChat.creator = updatedMembers[newCreator];
+                getGroupChat.members = updatedMembers;
+                await getGroupChat.save();
+                return new helper_1.ResponseBody(200, "Group updated with new Admin");
             }
+            getGroupChat.members = updatedMembers;
+            await getGroupChat.save();
+            return new helper_1.ResponseBody(200, "Group updated");
         }
         catch (error) {
+            throw error;
         }
     }
     async renameGroup(payload, chatId, request) {

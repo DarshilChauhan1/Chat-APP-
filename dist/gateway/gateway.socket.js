@@ -38,7 +38,21 @@ let MyGateway = class MyGateway {
         this.server.on('connection', async (socket) => {
             let user = socket['user'];
             this.userSocketIds.set(user._id.toString(), socket.id);
-            console.log("socketUserIds---->", this.userSocketIds);
+            socket.on(event_constants_1.REFETCH_CHATS, async ({ chatId, memberId }) => {
+                let socketId = this.userSocketIds.get(memberId);
+                let messages = [];
+                try {
+                    messages = await this.MessageModel.find({ $or: [{ receiver: { $in: [memberId] } }, { sender: memberId }] });
+                }
+                catch (error) {
+                    throw error;
+                }
+                const messagesForRealTime = {
+                    messages: messages,
+                    chat: chatId,
+                };
+                socket.to(socketId).emit(event_constants_1.REFETCH_CHATS, messagesForRealTime);
+            });
             socket.on(event_constants_1.NEW_MESSAGE, async ({ chatId, members, content }) => {
                 const messageForRealtime = {
                     content,

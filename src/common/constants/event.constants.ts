@@ -1,1 +1,2 @@
 export const NEW_MESSAGE = 'NEW_MESSAGE'
+export const REFETCH_CHATS= 'REFETCH_CHATS'
