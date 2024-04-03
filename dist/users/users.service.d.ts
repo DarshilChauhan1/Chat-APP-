@@ -40,5 +40,8 @@ export declare class UsersService {
     acceptFriendRequest(payload: any, request: any): Promise<ResponseBody>;
     getAllPendingRequests(request: Request): Promise<ResponseBody>;
     getAllOnetoOneChat(request: Request): Promise<ResponseBody>;
-    getAllMessages(userId: string, request: Request): Promise<ResponseBody>;
+    getAllMessages(paylaod: {
+        receiverId: string[];
+        chatId: string;
+    }, request: Request): Promise<ResponseBody>;
 }

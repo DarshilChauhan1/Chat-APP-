@@ -122,16 +122,17 @@ export class UsersService {
         }
     }
 
-    async getAllMessages(userId : string, request : Request){
+    async getAllMessages(paylaod : {receiverId : string[], chatId : string }, request : Request){
         try {
-            const getAllMessages = await this.MessageModel.find({sender : userId}).populate('chat', 'name groupChat members')
+            const {receiverId, chatId} = paylaod;
+            let userId = request['user'].id
+            const getAllMessages = await this.MessageModel.find({chat : chatId, updatedAt : -1}).populate('chat', 'name groupChat members')
 
             //case when user deletes all the chats
             if(!getAllMessages) throw new NotFoundException('User has no chats');
 
             // send all the user messages
             return new ResponseBody(200, "All the user messages", getAllMessages);
-            console.log(getAllMessages);
         } catch (error) {
             console.log(error)
             throw error

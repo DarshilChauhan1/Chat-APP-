@@ -39,8 +39,8 @@ let UsersController = class UsersController {
     getAllOnetoOneChats(request) {
         return;
     }
-    getAllMessages(params, request) {
-        return this.userService.getAllMessages(params, request);
+    getAllMessages(paylaod, request) {
+        return this.userService.getAllMessages(paylaod, request);
     }
 };
 exports.UsersController = UsersController;
@@ -90,11 +90,11 @@ __decorate([
     __metadata("design:returntype", void 0)
 ], UsersController.prototype, "getAllOnetoOneChats", null);
 __decorate([
-    (0, common_1.Get)('messages/:userId'),
-    __param(0, (0, common_1.Param)('userId')),
+    (0, common_1.Get)('messages'),
+    __param(0, (0, common_1.Body)()),
     __param(1, (0, common_1.Req)()),
     __metadata("design:type", Function),
-    __metadata("design:paramtypes", [String, Object]),
+    __metadata("design:paramtypes", [Object, Object]),
     __metadata("design:returntype", void 0)
 ], UsersController.prototype, "getAllMessages", null);
 exports.UsersController = UsersController = __decorate([

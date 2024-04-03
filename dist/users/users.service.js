@@ -120,13 +120,13 @@ let UsersService = class UsersService {
             throw error;
         }
     }
-    async getAllMessages(userId, request) {
+    async getAllMessages(paylaod, request) {
         try {
-            const getAllMessages = await this.MessageModel.find({ sender: userId }).populate('chat', 'name groupChat members');
+            const { receiverId, chatId } = paylaod;
+            const getAllMessages = await this.MessageModel.find({ chat: chatId }).populate('chat', 'name groupChat members');
             if (!getAllMessages)
                 throw new common_1.NotFoundException('User has no chats');
             return new helper_1.ResponseBody(200, "All the user messages", getAllMessages);
-            console.log(getAllMessages);
         }
         catch (error) {
             console.log(error);

@@ -38,21 +38,6 @@ let MyGateway = class MyGateway {
         this.server.on('connection', async (socket) => {
             let user = socket['user'];
             this.userSocketIds.set(user._id.toString(), socket.id);
-            socket.on(event_constants_1.REFETCH_CHATS, async ({ chatId, memberId }) => {
-                let socketId = this.userSocketIds.get(memberId);
-                let messages = [];
-                try {
-                    messages = await this.MessageModel.find({ $or: [{ receiver: { $in: [memberId] } }, { sender: memberId }] });
-                }
-                catch (error) {
-                    throw error;
-                }
-                const messagesForRealTime = {
-                    messages: messages,
-                    chat: chatId,
-                };
-                socket.to(socketId).emit(event_constants_1.REFETCH_CHATS, messagesForRealTime);
-            });
             socket.on(event_constants_1.NEW_MESSAGE, async ({ chatId, members, content }) => {
                 const messageForRealtime = {
                     content,
@@ -87,12 +72,11 @@ let MyGateway = class MyGateway {
             });
         });
     }
-    onNewMessage(payload) {
-        console.log(payload);
-    }
     async socketAuthenticator(socket, next) {
+        console.log('Enter');
         try {
             let token = socket.request.headers.authorization;
+            console.log(token);
             if (!token)
                 throw new common_1.NotFoundException('Token not found');
             const decode = await this.jwtService.verifyAsync(token, { secret: this.configService.get('ACCESS_TOKEN_SECRET') });
@@ -125,13 +109,6 @@ __decorate([
     (0, websockets_1.WebSocketServer)(),
     __metadata("design:type", socket_io_1.Server)
 ], MyGateway.prototype, "server", void 0);
-__decorate([
-    (0, websockets_1.SubscribeMessage)(event_constants_1.NEW_MESSAGE),
-    __param(0, (0, websockets_1.MessageBody)()),
-    __metadata("design:type", Function),
-    __metadata("design:paramtypes", [Object]),
-    __metadata("design:returntype", void 0)
-], MyGateway.prototype, "onNewMessage", null);
 exports.MyGateway = MyGateway = __decorate([
     (0, common_1.UseFilters)(exception_filters_1.ExceptionHandling),
     (0, websockets_1.WebSocketGateway)(),

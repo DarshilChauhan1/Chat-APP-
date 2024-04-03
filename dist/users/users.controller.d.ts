@@ -9,5 +9,8 @@ export declare class UsersController {
     acceptFriendRequest(payload: any, request: Request): Promise<import("src/helpers/helper").ResponseBody>;
     getAllPendingRequests(request: Request): Promise<import("src/helpers/helper").ResponseBody>;
     getAllOnetoOneChats(request: Request): void;
-    getAllMessages(params: string, request: Request): Promise<import("src/helpers/helper").ResponseBody>;
+    getAllMessages(paylaod: {
+        receiverId: string[];
+        chatId: string;
+    }, request: Request): Promise<import("src/helpers/helper").ResponseBody>;
 }

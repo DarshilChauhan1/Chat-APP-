@@ -43,9 +43,9 @@ export class UsersController {
         return 
     }
 
-    @Get('messages/:userId')
-        getAllMessages(@Param('userId') params : string, @Req() request : Request ){
-            return this.userService.getAllMessages(params, request )
-        }
+    @Get('messages')
+        getAllMessages(@Body() paylaod : {receiverId : string[], chatId : string}, @Req() request : Request ){
+            return this.userService.getAllMessages(paylaod, request )
+    }
     
 }

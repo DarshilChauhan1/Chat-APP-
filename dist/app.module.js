@@ -16,6 +16,7 @@ const mongoose_1 = require("@nestjs/mongoose");
 const mongooseConfigasync_1 = require("./common/config/mongooseConfigasync");
 const config_1 = require("@nestjs/config");
 const chats_module_1 = require("./chats/chats.module");
+const gateway_module_1 = require("./gateway/gateway.module");
 let AppModule = class AppModule {
 };
 exports.AppModule = AppModule;
@@ -24,7 +25,7 @@ exports.AppModule = AppModule = __decorate([
         imports: [
             config_1.ConfigModule.forRoot(),
             mongoose_1.MongooseModule.forRootAsync(mongooseConfigasync_1.mongooseConfigasync),
-            auth_module_1.AuthModule, common_module_1.CommonModule, users_module_1.UsersModule, chats_module_1.ChatsModule
+            auth_module_1.AuthModule, common_module_1.CommonModule, users_module_1.UsersModule, chats_module_1.ChatsModule, gateway_module_1.GatewayModule
         ],
         controllers: [],
         providers: [app_service_1.AppService],

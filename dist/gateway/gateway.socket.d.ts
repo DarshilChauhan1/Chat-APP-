@@ -38,7 +38,6 @@ export declare class MyGateway implements OnModuleInit {
     private userSocketIds;
     server: Server;
     onModuleInit(): void;
-    onNewMessage(payload: any): void;
     private socketAuthenticator;
     private getSocketsofMembers;
 }

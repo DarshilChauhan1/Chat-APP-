@@ -8,12 +8,13 @@ import { MongooseModule } from '@nestjs/mongoose';
 import { mongooseConfigasync } from './common/config/mongooseConfigasync';
 import { ConfigModule } from '@nestjs/config';
 import { ChatsModule } from './chats/chats.module';
+import { GatewayModule } from './gateway/gateway.module';
 
 @Module({
   imports: [
     ConfigModule.forRoot(),
     MongooseModule.forRootAsync(mongooseConfigasync),
-    AuthModule, CommonModule, UsersModule, ChatsModule],
+    AuthModule, CommonModule, UsersModule, ChatsModule, GatewayModule],
   controllers: [],
   providers: [AppService],
 })
