@@ -28,25 +28,6 @@ export class MyGateway implements OnModuleInit {
         this.server.on('connection', async (socket: Socket) => {
             let user = socket['user'];
             this.userSocketIds.set(user._id.toString(), socket.id);
-
-            // socket.on(REFETCH_CHATS, async({chatId, receiverId})=>{
-            //     let socketId = this.userSocketIds.get(user._id.toString());
-            //     console.log(socketId)
-            //     let messages = []
-            //     try {
-            //         messages = await this.MessageModel.find({chat : chatId, $or : [{receiver : {$in : [receiverId, user._id]}}, 
-            //         {sender : {$in :[user._id, receiverId]}}]}).select('content chatId')
-            //         console.log(messages);
-            //     } catch (error) {
-            //         throw error
-            //     }
-                
-            //     const messagesForRealTime = {
-            //         messages : messages,
-            //         chat : chatId,
-            //     }
-            //     socket.to(socketId).emit(REFETCH_CHATS, messagesForRealTime)
-            // })
             socket.on(NEW_MESSAGE, async ({ chatId, members, content }) => {
                 const messageForRealtime = {
                     content,
